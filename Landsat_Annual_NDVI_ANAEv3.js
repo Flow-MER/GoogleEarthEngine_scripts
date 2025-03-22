@@ -3,18 +3,14 @@ var anaev3 = ee.FeatureCollection("projects/ee-litepc/assets/ANAEv3_gt1ha");
 /***** End of imports. If edited, may not auto-convert in the playground. *****/
 
 // #############################################################################
-// BWS Vulnerabilities project (2022)  MDBA/CEWO
-// Shane Brooks shane@brooks.eco - 22/01/2023
+// Flow-MER project (2025)  MDBA/CEWH
+// Shane Brooks shane@brooks.eco - 22/01/2025
 // This code uses AVHRR and MODIS NDVI products from Google's Earth Engine Library to
-// calculate the average NDVI per ANAE polygon per calendar year 1986-2022
-// The code would not run in one bite so was done in a couple of batches and outputs were appended
+// calculate the average NDVI per ANAE polygon per calendar year 
 
 
 // #############################################################################
-// polygons is the ANAEv3 susbset used for the BWS Vulnerabilities project.
-// It is the subset of ANAE redgum, blackbox and coolibah polygons > 1 Ha that intersect
-// the managed floodplain with some additonal polygons added that intersect MDBA waterbird areas and Ramar sites
-// e.g. to fix that Kerang Lakes is not on the MDBA "Managed Floodplain" layer
+// polygons is the ANAEv3 susbset > 1 Ha 
 
 //var polygons = anaev3
 var polygons = anaev3
@@ -50,8 +46,6 @@ var Landsat_years = ee.List.sequence(1986, 2024, 1).map(function(year){
   var end = start.advance(1, 'year');
   var ndviMeanYear = Landsat_NDVI_masked //Landsat_NDVI.select('NDVI')
                               .filterDate(start, end).mean();//.multiply(0.0001);
-  //var mask = ndviMeanYear.gt(0.0); // want to filter before calculating mean
-  //var masked = ndviMeanYear.updateMask(mask);
   return ndviMeanYear.set('year', start.format("YYYY"));
 });
 var NDVI_1986_2024_landsat = ee.ImageCollection(Landsat_years); 
